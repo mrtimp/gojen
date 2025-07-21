@@ -13,7 +13,7 @@ gojen [--project my-project]
 
 ## License
 
-envpop is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+gojen is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Contact
 
