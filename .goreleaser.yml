@@ -1,0 +1,11 @@
+version: 2
+
+builds:
+  - goos:
+      - linux
+      - darwin
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.Commit={{.Commit}}
+      - -X main.BuildDate={{.Date}}

@@ -1,0 +1,47 @@
+package main
+
+import (
+	"context"
+	"os"
+
+	{{ if .USE_AWS }}"github.com/aws/aws-sdk-go-v2/config"{{ end }}
+	{{ if .USE_GOGLAGS }}"github.com/jessevdk/go-flags"{{ end }}
+	{{ if .USE_LOGRUS }}log "github.com/sirupsen/logrus"{{ end }}
+)
+
+type Options struct {
+	{{ if .USE_AWS }}Profile string `short:"p" long:"profile" description:"The AWS CLI profile to use" env:"AWS_PROFILE" required:"true"`{{ end }}
+	Debug   bool   `long:"debug" description:"Enable debug logging"`
+}
+
+func main() {
+	{{ if .USE_GOGLAGS }}var opts Options
+	_, err := flags.Parse(&opts)
+	if err != nil {
+		os.Exit(1)
+	}{{ end }}
+
+	{{ if .USE_LOGRUS }}log.SetFormatter(&log.TextFormatter{
+		FullTimestamp: true,
+	})
+
+	if opts.Debug {
+		log.SetLevel(log.DebugLevel)
+	} else {
+		log.SetLevel(log.WarnLevel)
+	}{{ end }}
+
+	{{ if .USE_AWS }}var optFns []func(options *config.LoadOptions) error
+
+	if opts.Profile != "" {
+		optFns = append(optFns, config.WithSharedConfigProfile(opts.Profile))
+	}
+
+	log.Debugf("Loading AWS config: profile=%s", opts.Profile)
+
+	ctx := context.Background()
+	cfg, err := config.LoadDefaultConfig(context.Background(), optFns...)
+	if err != nil {
+		log.Fatal(err)
+	}{{ end }}
+}

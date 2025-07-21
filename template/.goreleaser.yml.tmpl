@@ -1,0 +1,13 @@
+version: 2
+
+builds:
+  - id: {{ .PROJECT_NAME | lower }}
+    goos:{{ range .BUILD_TARGETS }}
+      - {{ . | lower }} {{ end }}
+    goarch:{{ range .BUILD_ARCHITECTURES }}
+      - {{ . | lower }} {{ end }}
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.Commit={{.Commit}}
+      - -X main.BuildDate={{.Date}}
