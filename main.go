@@ -15,12 +15,13 @@ import (
 )
 
 type Options struct {
+	Project     string `short:"p" long:"project" description:"Project name"`
 	TemplateDir string `long:"template-dir" description:"Optional template directory (helper for developing locally)"`
 }
 
 const (
 	TemplateRepo   = "https://github.com/mrtimp/gojen"
-	TemplateSubDir = ""
+	TemplateSubDir = "template"
 )
 
 func main() {
@@ -30,8 +31,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	projectName := promptString("Project name", "")
-	destinationDir := promptString("Destination directory (default: ./"+projectName+")", "")
+	projectName := promptString("Project name", opts.Project)
+	destinationDir := promptString("Destination directory (default: ./"+projectName+")", opts.Project)
 
 	if destinationDir == "" {
 		destinationDir = "./" + projectName
@@ -92,6 +93,11 @@ func main() {
 		}
 	}
 
+	if err := goModTidy(destinationDir); err != nil {
+		log.Infoln("Installed Go modules...")
+		log.Warn(err)
+	}
+
 	log.Infoln("Project bootstrapped at:", destinationDir)
 }
 
@@ -137,6 +143,15 @@ func cloneRepo(repoURL, destPath string) error {
 
 func gitInit(path string) error {
 	cmd := exec.Command("git", "init")
+	cmd.Dir = path
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd.Run()
+}
+
+func goModTidy(path string) error {
+	cmd := exec.Command("go", "mod", "tidy")
 	cmd.Dir = path
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

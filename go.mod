@@ -3,7 +3,6 @@ module gojen
 go 1.24
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.36.6
 	github.com/aws/aws-sdk-go-v2/config v1.29.18
 	github.com/jessevdk/go-flags v1.6.1
 	github.com/manifoldco/promptui v0.9.0
@@ -11,6 +10,7 @@ require (
 )
 
 require (
+	github.com/aws/aws-sdk-go-v2 v1.36.6 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.71 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.33 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.37 // indirect
