@@ -9,3 +9,14 @@ builds:
       - -X main.Version={{.Version}}
       - -X main.Commit={{.Commit}}
       - -X main.BuildDate={{.Date}}
+
+brews:
+  - repository:
+      owner: mrtimp
+      name: homebrew-formulas
+    directory: Formula
+    homepage: "https://github.com/mrtimp/gojen"
+    description: "Go project generator"
+    commit_author:
+      name: mrtimp
+      email: timp@unfuddle.nz
